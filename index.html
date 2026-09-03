@@ -1,0 +1,581 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Something Special 💌</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #ffd6e7, #f4ddff, #dceeff);
+    color: #603b4d;
+}
+
+/* =========================
+   LOCK SCREEN
+========================= */
+
+#lockScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+        radial-gradient(circle at 30% 20%, #fff4fa, transparent 35%),
+        linear-gradient(135deg, #f9d7e8, #eadcff, #d9ecff);
+    transition: 1s ease;
+}
+
+.lockBox {
+    width: min(90%, 420px);
+    padding: 45px 30px;
+    border-radius: 35px;
+    background: rgba(255,255,255,.58);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.8);
+    box-shadow: 0 25px 70px rgba(100,60,100,.2);
+    animation: lockAppear 1.2s ease;
+}
+
+@keyframes lockAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.lockIcon {
+    font-size: 70px;
+    margin-bottom: 15px;
+    animation: lockFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes lockFloat {
+    0%,100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+}
+
+.lockBox h1 {
+    font-family: Georgia, serif;
+    font-size: 38px;
+    color: #a74270;
+    margin-bottom: 10px;
+}
+
+.lockBox p {
+    color: #8d6277;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+.passwordBox {
+    position: relative;
+    margin: 20px 0;
+}
+
+.passwordBox input {
+    width: 100%;
+    padding: 15px 50px 15px 18px;
+    border: 1px solid rgba(170,100,140,.25);
+    border-radius: 50px;
+    outline: none;
+    background: rgba(255,255,255,.75);
+    font-size: 16px;
+    text-align: center;
+    color: #603b4d;
+}
+
+.passwordBox input:focus {
+    box-shadow: 0 0 0 3px rgba(210,100,150,.15);
+}
+
+.unlockBtn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg,#d85c91,#a94c91);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.unlockBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(170,70,120,.3);
+}
+
+.error {
+    color: #c14b72;
+    font-size: 14px;
+    margin-top: 15px;
+    min-height: 20px;
+}
+
+/* Shake animation for wrong password */
+.shake {
+    animation: shake .4s ease;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* =========================
+   MAIN PAGE
+========================= */
+
+#mainPage {
+    min-height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 15px;
+    opacity: 0;
+    transition: 1.5s ease;
+}
+
+#mainPage.show {
+    opacity: 1;
+}
+
+.card {
+    position: relative;
+    width: min(90%, 650px);
+    padding: 50px 35px;
+    border-radius: 35px;
+    background: rgba(255,255,255,.58);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,.8);
+    box-shadow: 0 25px 70px rgba(120,70,100,.2);
+    text-align: center;
+}
+
+.crown {
+    font-size: 35px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+h2 {
+    margin-top: 12px;
+    font-size: clamp(35px,8vw,58px);
+    font-family: Georgia,serif;
+    color: #a74270;
+}
+
+.subtitle {
+    margin-top: 8px;
+    color: #8d6277;
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+.divider {
+    margin: 25px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #d16b95;
+}
+
+.divider span {
+    width: 70px;
+    height: 1px;
+    background: linear-gradient(to right,transparent,#d16b95);
+}
+
+.divider span:last-child {
+    background: linear-gradient(to left,transparent,#d16b95);
+}
+
+.message {
+    font-family: Georgia,serif;
+    font-size: 19px;
+    line-height: 1.9;
+}
+
+.highlight {
+    color: #b23f72;
+    font-weight: bold;
+}
+
+button {
+    margin-top: 30px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg,#d85c91,#a94c91);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+button:hover {
+    transform: translateY(-3px) scale(1.03);
+}
+
+.extra {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: .8s ease;
+}
+
+.extra.show {
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 20px;
+}
+
+.flowers {
+    margin-top: 25px;
+    font-size: 27px;
+    letter-spacing: 8px;
+}
+
+/* Floating decorations */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    animation: rise linear infinite;
+    opacity: .7;
+    z-index: 1;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+    }
+    15% { opacity: .8; }
+    100% {
+        transform: translateY(-15vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.corner {
+    position: fixed;
+    font-size: 45px;
+    opacity: .7;
+    z-index: 2;
+}
+
+.top-left { top: 20px; left: 20px; }
+.top-right { top: 20px; right: 20px; }
+.bottom-left { bottom: 20px; left: 20px; }
+.bottom-right { bottom: 20px; right: 20px; }
+
+@media(max-width:500px) {
+    .lockBox {
+        padding: 38px 22px;
+    }
+
+    .lockBox h1 {
+        font-size: 32px;
+    }
+
+    .card {
+        padding: 38px 22px;
+    }
+
+    .message {
+        font-size: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     PASSWORD INTRO
+========================= -->
+
+<section id="lockScreen">
+
+    <div class="lockBox" id="lockBox">
+
+        <div class="lockIcon" id="lockIcon">🔐</div>
+
+        <h1>A Little Secret 💌</h1>
+
+        <p>
+            There's something special waiting inside...<br>
+            But first, you need the secret password ✨
+        </p>
+
+        <div class="passwordBox">
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter the secret password"
+                autocomplete="off"
+            >
+        </div>
+
+        <button class="unlockBtn" onclick="unlock()">
+            🔓 Unlock
+        </button>
+
+        <div class="error" id="error"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MAIN MESSAGE
+========================= -->
+
+<main id="mainPage">
+
+    <div class="corner top-left">🌸</div>
+    <div class="corner top-right">✨</div>
+    <div class="corner bottom-left">🌷</div>
+    <div class="corner bottom-right">🦋</div>
+
+    <div class="card">
+
+        <div class="crown">✨</div>
+
+        <h2>For Someone Special</h2>
+
+        <div class="subtitle">
+            a little message from my heart
+        </div>
+
+        <div class="divider">
+            <span></span>
+            💗
+            <span></span>
+        </div>
+
+        <div class="message">
+
+            Some people enter our lives quietly,
+            but somehow leave the
+            <span class="highlight">loudest memories.</span>
+
+            <br><br>
+
+            You are one of those beautiful people
+            who can make an ordinary moment feel
+            a little more special.
+
+            <br><br>
+
+            Your smile, your presence, and even
+            the smallest conversations can become
+            memories worth keeping.
+
+            <br><br>
+
+            I hope you always remember how
+            <span class="highlight">special you are.</span>
+
+            Keep smiling, keep dreaming,
+            and never forget that beautiful things
+            are waiting ahead. ✨
+
+        </div>
+
+        <button onclick="showMessage()">
+            Open One More 💌
+        </button>
+
+        <div class="extra" id="extra">
+
+            <div class="divider">
+                <span></span>
+                🌷
+                <span></span>
+            </div>
+
+            <p class="message">
+                And if you ever have a difficult day,
+                remember that tomorrow is another page.
+
+                <br><br>
+
+                Keep going. Keep shining. ✨
+                <br>
+                Your story is still being written. 💗
+            </p>
+
+        </div>
+
+        <div class="flowers">
+            🌷 🌸 🌷 🌸 🌷
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+/* =========================
+   CHANGE PASSWORD HERE
+========================= */
+
+const correctPassword = "1234";
+
+
+/* =========================
+   UNLOCK FUNCTION
+========================= */
+
+function unlock() {
+
+    const input = document.getElementById("password");
+    const error = document.getElementById("error");
+    const lockBox = document.getElementById("lockBox");
+    const lockIcon = document.getElementById("lockIcon");
+    const lockScreen = document.getElementById("lockScreen");
+    const mainPage = document.getElementById("mainPage");
+
+    if (input.value === correctPassword) {
+
+        error.innerHTML = "Unlocked! 💗";
+
+        lockIcon.innerHTML = "🔓";
+
+        setTimeout(() => {
+
+            lockScreen.style.opacity = "0";
+
+            setTimeout(() => {
+
+                lockScreen.style.display = "none";
+
+                mainPage.classList.add("show");
+
+                document.body.style.overflow = "auto";
+
+            }, 1000);
+
+        }, 700);
+
+    } else {
+
+        error.innerHTML = "Hmm... that's not the secret password 💭";
+
+        lockBox.classList.remove("shake");
+
+        void lockBox.offsetWidth;
+
+        lockBox.classList.add("shake");
+
+        input.value = "";
+        input.focus();
+    }
+}
+
+
+/* Press ENTER to unlock */
+
+document.getElementById("password").addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        unlock();
+    }
+
+});
+
+
+/* =========================
+   EXTRA MESSAGE
+========================= */
+
+function showMessage() {
+
+    document.getElementById("extra").classList.toggle("show");
+
+}
+
+
+/* =========================
+   FLOATING DECORATIONS
+========================= */
+
+const decorations = [
+    "♡",
+    "♥",
+    "✦",
+    "✧",
+    "✨",
+    "🌸",
+    "🌷",
+    "💗",
+    "🦋"
+];
+
+function createParticle() {
+
+    const particle = document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.innerHTML =
+        decorations[
+            Math.floor(Math.random() * decorations.length)
+        ];
+
+    particle.style.left =
+        Math.random() * 100 + "vw";
+
+    particle.style.fontSize =
+        (12 + Math.random() * 20) + "px";
+
+    particle.style.animationDuration =
+        (6 + Math.random() * 8) + "s";
+
+    particle.style.animationDelay =
+        Math.random() * 3 + "s";
+
+    document.body.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 15000);
+}
+
+setInterval(createParticle, 450);
+
+</script>
+
+</body>
+</html>
+```
